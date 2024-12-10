@@ -60,7 +60,7 @@ main {
     overflow: hidden;
     width: 300px;
     text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
     transition: background-color 0.3s ease; /* Smooth transition for background color change */
 }
 
