@@ -1,20 +1,18 @@
-let currentPokemonIndex = 1; // Start with the first Pokémon (Bulbasaur)
-const totalPokemon = 898; // Total number of Pokémon (as of now)
-let currentPokemonCries = {}; // Store the current Pokémon's cries
+let currentPokemonIndex = 1; 
+const totalPokemon = 898; 
+let currentPokemonCries = {}; 
 
-// Fetch Pokémon data from PokeAPI
 function fetchPokemon(idOrName) {
     fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`)
         .then(response => response.json())
         .then(data => {
             loadPokemonData(data);
-            currentPokemonIndex = data.id; // Update the currentPokemonIndex to the fetched Pokémon's ID
-            showTab('random'); // Switch to the Pokémon card tab
+            currentPokemonIndex = data.id; 
+            showTab('random'); 
         })
         .catch(error => console.error('Error:', error));
 }
 
-// Load Pokémon data into the card
 function loadPokemonData(pokemon) {
     document.getElementById('pokemonName').innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
     document.getElementById('pokemonNumber').innerText = `#${pokemon.id}`;
@@ -24,7 +22,6 @@ function loadPokemonData(pokemon) {
     document.getElementById('pokemonAbilities').innerText = pokemon.abilities.map(ability => ability.ability.name).join(', ');
     document.getElementById('pokemonImage').src = pokemon.sprites.front_default;
 
-    // Update forms dropdown
     const formSelect = document.getElementById('formSelect');
     formSelect.innerHTML = '';
     pokemon.forms.forEach(form => {
@@ -34,10 +31,9 @@ function loadPokemonData(pokemon) {
         formSelect.appendChild(option);
     });
 
-    // Update cries dropdown and store cries URLs
     const crySelect = document.getElementById('crySelect');
     crySelect.innerHTML = '';
-    currentPokemonCries = pokemon.cries || {}; // Store the cries URLs
+    currentPokemonCries = pokemon.cries || {}; 
     Object.keys(currentPokemonCries).forEach(cry => {
         const option = document.createElement('option');
         option.value = cry;
@@ -45,9 +41,8 @@ function loadPokemonData(pokemon) {
         crySelect.appendChild(option);
     });
 
-    // Change background color based on Pokémon type
     const pokemonCard = document.querySelector('.pokemon-card');
-    pokemonCard.className = 'pokemon-card'; // Reset class list
+    pokemonCard.className = 'pokemon-card'; 
     const primaryType = pokemon.types[0].type.name;
     pokemonCard.classList.add(primaryType);
 }
@@ -91,7 +86,7 @@ function playCry() {
 
 function searchByName() {
     const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
-    console.log(`Searching by name: ${searchInput}`); // Debugging statement
+    console.log(`Searching by name: ${searchInput}`); 
     if (searchInput) {
         fetchPokemon(searchInput);
     } else {
@@ -101,7 +96,7 @@ function searchByName() {
 
 function searchByNumber() {
     const searchInput = document.getElementById('searchInput').value.trim();
-    console.log(`Searching by number: ${searchInput}`); // Debugging statement
+    console.log(`Searching by number: ${searchInput}`); 
     if (!isNaN(searchInput) && searchInput > 0 && searchInput <= totalPokemon) {
         fetchPokemon(searchInput);
     } else {
@@ -109,5 +104,4 @@ function searchByNumber() {
     }
 }
 
-// Initial load of the first Pokémon
 fetchPokemon(currentPokemonIndex);
